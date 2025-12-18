@@ -18,6 +18,19 @@ pub fn ensure_main_branch() -> Result<(), AppError> {
     }
 }
 
+pub fn ensure_no_dirty() -> Result<(), AppError> {
+    let output = Command::new("git")
+        .arg("status")
+        .arg("--porcelain")
+        .output()?;
+
+    let result = String::from_utf8(output.stdout)?;
+    match result.trim() {
+        "" => Ok(()),
+        _ => Err(AppError::DirtyWorkTreeError(result)),
+    }
+}
+
 pub fn get_latest_tag_on_main() -> Result<Version, AppError> {
     let output = Command::new("git")
         .arg("describe")
@@ -33,7 +46,7 @@ pub fn get_latest_tag_on_main() -> Result<Version, AppError> {
         return Err(AppError::InvalidTagError(latest_tag));
     }
 
-    let latest_version = semver::Version::parse(&latest_tag[1..].trim())?;
+    let latest_version = semver::Version::parse(latest_tag[1..].trim())?;
 
     Ok(latest_version)
 }

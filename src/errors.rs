@@ -27,4 +27,7 @@ pub enum AppError {
 
     #[error("Failed to parse Cargo.toml file.")]
     ParseError(String),
+
+    #[error("Work tree is dirty")]
+    DirtyWorkTreeError(String),
 }
