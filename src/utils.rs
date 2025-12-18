@@ -1,4 +1,3 @@
-use crate::args::App;
 use crate::errors::AppError;
 use semver::Version;
 use std::fs;

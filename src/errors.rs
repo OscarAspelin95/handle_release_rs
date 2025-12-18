@@ -25,6 +25,6 @@ pub enum AppError {
     #[error("New git tag and cargo package version do not match")]
     VersionMismatchError(String),
 
-    #[error("")]
+    #[error("Failed to parse Cargo.toml file.")]
     ParseError(String),
 }

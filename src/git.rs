@@ -12,7 +12,7 @@ pub fn ensure_main_branch() -> Result<(), AppError> {
         .output()?;
 
     let branch = String::from_utf8(output.stdout)?;
-    match branch.trim().as_ref() {
+    match branch.trim() {
         "main" => Ok(()),
         _ => Err(AppError::NotOnMainBranchError(branch)),
     }
@@ -39,7 +39,7 @@ pub fn get_latest_tag_on_main() -> Result<Version, AppError> {
 }
 
 pub fn make_and_push_tag(current_version: Version, new_version: Version) -> Result<(), AppError> {
-    let new_tag = format!("v{}", new_version.to_string());
+    let new_tag = format!("v{}", new_version);
 
     info!("Bump v{current_version} -> {new_tag}? (y/n): ");
     let mut input = String::new();
