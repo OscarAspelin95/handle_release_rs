@@ -1,0 +1,12 @@
+[package]
+name = "handle_release_rs"
+version = "0.0.1"
+edition = "2024"
+
+[dependencies]
+clap = {version = "4.5.53", features = ["derive"]}
+semver = {version = "1.0.27"}
+thiserror = {version = "2.0.17"}
+log = {version = "0.4.29"}
+simple_logger = {version = "5.1.0"}
+toml = {version = "0.9"}
