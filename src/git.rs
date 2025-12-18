@@ -58,23 +58,32 @@ pub fn make_and_push_tag(current_version: Version, new_version: Version) -> Resu
     let mut input = String::new();
     stdin().read_line(&mut input)?;
 
-    match input.as_ref() {
-        "y" => {}
-        _ => exit(1),
+    match input.trim() {
+        "y" => {
+            info!("Proceeding...")
+        }
+        _ => {
+            info!("Aborted");
+            exit(1);
+        }
     }
 
-    let _ = Command::new("git")
+    let git_tag = Command::new("git")
         .arg("tag")
         .arg("-am")
         .arg(&new_tag)
         .arg(&new_tag)
         .output()?;
 
-    let _ = Command::new("git")
+    info!("{:?}", String::from_utf8(git_tag.stdout)?);
+
+    let git_push = Command::new("git")
         .arg("push")
         .arg("origin")
         .arg(&new_tag)
         .output()?;
+
+    info!("{:?}", String::from_utf8(git_push.stdout)?);
 
     Ok(())
 }
