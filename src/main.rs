@@ -37,12 +37,8 @@ fn main() -> Result<(), AppError> {
 
     if package_version != new_git_version {
         return Err(AppError::VersionMismatchError(format!(
-            r#"
-            New git tag `{new_git_version}` does not match current package version `{package_version}`.
-
-            Make sure Cargo.toml and Cargo.lock has been updated
-            to the latest version {new_git_version}. Remember to commit.
-            "#,
+            "New git tag {new_git_version} does not match current package version {package_version}. \
+            Make sure to update and commit the Cargo.toml and Cargo.lock versions."
         )));
     }
 

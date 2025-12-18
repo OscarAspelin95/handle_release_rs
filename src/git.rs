@@ -33,7 +33,7 @@ pub fn get_latest_tag_on_main() -> Result<Version, AppError> {
         return Err(AppError::InvalidTagError(latest_tag));
     }
 
-    let latest_version = semver::Version::parse(&latest_tag[1..])?;
+    let latest_version = semver::Version::parse(&latest_tag[1..].trim())?;
 
     Ok(latest_version)
 }
