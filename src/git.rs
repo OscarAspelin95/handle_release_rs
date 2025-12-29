@@ -51,9 +51,11 @@ pub fn get_latest_tag_on_main() -> Result<Version, AppError> {
     Ok(latest_version)
 }
 
+// We use `info!` here because git outputs useful stuff
+// there that are not strictly errors.
 fn check_stderr(stderr: &[u8]) {
     if !stderr.is_empty() {
-        error!("Error: {}", String::from_utf8_lossy(stderr));
+        info!("{}", String::from_utf8_lossy(stderr));
     }
 }
 pub fn make_and_push_tag(current_version: Version, new_version: Version) -> Result<(), AppError> {
