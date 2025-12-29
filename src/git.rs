@@ -25,9 +25,9 @@ pub fn ensure_no_dirty() -> Result<(), AppError> {
         .output()?;
 
     let result = String::from_utf8(output.stdout)?;
-    match result.trim() {
-        "" => Ok(()),
-        _ => Err(AppError::DirtyWorkTreeError(result)),
+    match result.trim().is_empty() {
+        true => Ok(()),
+        false => Err(AppError::DirtyWorkTreeError(result)),
     }
 }
 
@@ -51,6 +51,11 @@ pub fn get_latest_tag_on_main() -> Result<Version, AppError> {
     Ok(latest_version)
 }
 
+fn check_stderr(stderr: &[u8]) {
+    if !stderr.is_empty() {
+        error!("Error: {}", String::from_utf8_lossy(stderr));
+    }
+}
 pub fn make_and_push_tag(current_version: Version, new_version: Version) -> Result<(), AppError> {
     let new_tag = format!("v{}", new_version);
 
@@ -75,7 +80,7 @@ pub fn make_and_push_tag(current_version: Version, new_version: Version) -> Resu
         .arg(&new_tag)
         .output()?;
 
-    info!("{:?}", String::from_utf8(git_tag.stdout)?);
+    check_stderr(&git_tag.stderr);
 
     let git_push = Command::new("git")
         .arg("push")
@@ -83,7 +88,7 @@ pub fn make_and_push_tag(current_version: Version, new_version: Version) -> Resu
         .arg(&new_tag)
         .output()?;
 
-    info!("{:?}", String::from_utf8(git_push.stdout)?);
+    check_stderr(&git_push.stderr);
 
     Ok(())
 }

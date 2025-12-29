@@ -1,4 +1,5 @@
 use clap::ValueEnum;
+use rstest::rstest;
 use semver::Version;
 
 #[derive(Debug, Clone, ValueEnum)]
@@ -27,4 +28,19 @@ impl BumpType {
 
         version
     }
+}
+
+#[rstest]
+#[case(BumpType::Patch, Version::new(0, 0, 0), Version::new(0, 0, 1))]
+#[case(BumpType::Minor, Version::new(0, 0, 1), Version::new(0, 1, 0))]
+#[case(BumpType::Minor, Version::new(0, 1, 0), Version::new(0, 2, 0))]
+#[case(BumpType::Major, Version::new(0, 2, 0), Version::new(1, 0, 0))]
+#[case(BumpType::Major, Version::new(1, 0, 0), Version::new(2, 0, 0))]
+fn test_bump_version(
+    #[case] bump_type: BumpType,
+    #[case] version: Version,
+    #[case] expected: Version,
+) {
+    let result = bump_type.bump_version(version);
+    assert_eq!(result, expected);
 }

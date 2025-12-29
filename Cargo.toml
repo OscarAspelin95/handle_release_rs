@@ -10,3 +10,4 @@ thiserror = {version = "2.0.17"}
 log = {version = "0.4.29"}
 simple_logger = {version = "5.1.0"}
 toml = {version = "0.9"}
+rstest = {version = "0.26.1"}
