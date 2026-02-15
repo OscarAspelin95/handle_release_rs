@@ -41,6 +41,13 @@ pub fn get_latest_tag_on_main() -> Result<Version, AppError> {
 
     let latest_tag = String::from_utf8(output.stdout)?;
 
+    // If no tag exists, assume v0.0.0.
+    if &latest_tag == "" {
+        info!("No tag found. Assuming v0.0.0.");
+        let v0 = semver::Version::new(0, 0, 0);
+        return Ok(v0);
+    }
+
     if !latest_tag.starts_with("v") {
         error!("Found invalig tag {}", latest_tag);
         return Err(AppError::InvalidTagError(latest_tag));

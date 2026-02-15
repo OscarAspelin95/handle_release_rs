@@ -27,10 +27,3 @@ Optional arguments:
 <pre>
 <b>--dry-run</b> - Run all checks, but don't create and push a tag.
 </pre>
-
-
-## Roadmap
-- Add support for providing multiple accessions.
-- Add filtering options for e.g., platform, fastq byte size, etc.
-- Streaming support for large files.
-- Add dynamic timeout based on fastq byte size.
